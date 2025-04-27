@@ -32,6 +32,8 @@ namespace simulator
             ROTATION_X,          // Rotation around the X-axis, by theta angle.
             ROTATION_Y,          // Rotation around the Y-axis, by theta angle.
             ROTATION_Z,          // Rotation around the Z-axis, by theta angle.
+            SQRT_OF_X_V,         // Square-root of NOT Gate (alias for √X)
+            ADJ_SQRT_OF_X_V,     // Adjoint of the V gate (alias for (√X)^-1)
             CONTROLLED_NOT,      // Controlled-NOT (CNOT) gate: flips target qubit based on control, creates the state of entanglement between two qubits.
             CONTROLLED_Z,        // Controlled-Z gate: applies a phase flip conditional on the control.
             SWAP_GATE            // SWAP gate: exchanges the states of two qubits.
@@ -43,15 +45,16 @@ namespace simulator
             complex matrix[2][2]; // 2x2 matrix that stores various types of gates
         };
 
-        static constexpr qgate_2x2 pre_defined_qgates[7] = {
+        static constexpr qgate_2x2 pre_defined_qgates[9] = {
             {IDENTITY, {{1, 0}, {0, 1}}},
             {PAULI_X, {{0, 1}, {1, 0}}},
             {PAULI_Y, {{0, {0, -1}}, {{0, 1}, 0}}},
             {PAULI_Z, {{1, 0}, {0, -1}}},
             {HADAMARD, {{M_SQRT1_2, M_SQRT1_2}, {M_SQRT1_2, -M_SQRT1_2}}},
-            {PHASE_PI_2_SHIFT, {{1, 0}, {0, {0, 1}}}},                // e^(i * pi/2) = i
-            {PHASE_PI_4_SHIFT, {{1, 0}, {0, {M_SQRT1_2, M_SQRT1_2}}}} // e^(i * pi/4) = (sqrt(2)/2) + i(sqrt(2)/2)
-        };
+            {PHASE_PI_2_SHIFT, {{1, 0}, {0, {0, 1}}}},                 // e^(i * pi/2) = i
+            {PHASE_PI_4_SHIFT, {{1, 0}, {0, {M_SQRT1_2, M_SQRT1_2}}}}, // e^(i * pi/4) = (sqrt(2)/2) + i(sqrt(2)/2)
+            {SQRT_OF_X_V, {{(complex){0.5, 0.5}, (complex){0.5, -0.5}}, {(complex){0.5, -0.5}, (complex){0.5, 0.5}}}},
+            {ADJ_SQRT_OF_X_V, {{(complex){0.5, -0.5}, (complex){0.5, 0.5}}, {(complex){0.5, 0.5}, (complex){0.5, -0.5}}}}};
 
         static void apply_predefined_gate(complex *&__s, const std::size_t &_len, const gate_type &__g_type, const std::size_t &qubit_target);
         static qgate_2x2 &get_theta_gate(qgate_2x2 &__g, const gate_type &__g_type, const double &__theta);
@@ -81,6 +84,8 @@ namespace simulator
         qubit &apply_rotation_x(const double &_theta, const std::size_t &q_target);
         qubit &apply_rotation_y(const double &_theta, const std::size_t &q_target);
         qubit &apply_rotation_z(const double &_theta, const std::size_t &q_target);
+        qubit &apply_v(const std::size_t &q_target);
+        qubit &apply_adj_v(const std::size_t &q_target);
         qubit &apply_cnot(const std::size_t &q_control, const std::size_t &q_target);
         qubit &apply_cz(const std::size_t &q_control, const std::size_t &q_target);
         qubit &apply_swap(const std::size_t &qubit_1, const std::size_t &qubit_2);
