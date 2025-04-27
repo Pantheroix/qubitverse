@@ -11,6 +11,13 @@ namespace simulator
     void qubit::apply_predefined_gate(complex *&__s, const std::size_t &_len, const gate_type &__g_type, const std::size_t &qubit_target)
     {
         const std::size_t stride = 1 << qubit_target; // Distance between paired indices
+        std::size_t g_index;
+        if (__g_type == gate_type::SQRT_OF_X_V)
+            g_index = 7;
+        else if (__g_type == gate_type::ADJ_SQRT_OF_X_V)
+            g_index = 8;
+        else
+            g_index = static_cast<std::size_t>(__g_type);
 
         for (std::size_t i = 0; i < _len; i += 2 * stride)
         {
@@ -23,8 +30,8 @@ namespace simulator
                 complex a = __s[idx0];
                 complex b = __s[idx1];
 
-                __s[idx0] = pre_defined_qgates[static_cast<std::size_t>(__g_type)].matrix[0][0] * a + pre_defined_qgates[static_cast<std::size_t>(__g_type)].matrix[0][1] * b;
-                __s[idx1] = pre_defined_qgates[static_cast<std::size_t>(__g_type)].matrix[1][0] * a + pre_defined_qgates[static_cast<std::size_t>(__g_type)].matrix[1][1] * b;
+                __s[idx0] = pre_defined_qgates[g_index].matrix[0][0] * a + pre_defined_qgates[g_index].matrix[0][1] * b;
+                __s[idx1] = pre_defined_qgates[g_index].matrix[1][0] * a + pre_defined_qgates[g_index].matrix[1][1] * b;
             }
         }
     }
@@ -249,6 +256,18 @@ namespace simulator
         return *this;
     }
 
+    qubit &qubit::apply_v(const std::size_t &q_target)
+    {
+        qubit::apply_predefined_gate(this->M_qubits, this->M_len, gate_type::SQRT_OF_X_V, q_target);
+        return *this;
+    }
+
+    qubit &qubit::apply_adj_v(const std::size_t &q_target)
+    {
+        qubit::apply_predefined_gate(this->M_qubits, this->M_len, gate_type::ADJ_SQRT_OF_X_V, q_target);
+        return *this;
+    }
+
     qubit &qubit::apply_cnot(const std::size_t &q_control, const std::size_t &q_target)
     {
         qubit::apply_2qubit_gate(this->M_qubits, this->M_len, gate_type::CONTROLLED_NOT, q_control, q_target);
@@ -354,7 +373,7 @@ namespace simulator
     {
         double prob0 = 0.0, prob1 = 0.0;
 
-        for (int i = 0; i < this->M_len; i++)
+        for (std::size_t i = 0; i < this->M_len; i++)
         {
             int bit = (i >> nth) & 1;
             double ampSquared = std::norm(this->M_qubits[i]); // norm = |amplitude|^2
@@ -386,7 +405,7 @@ namespace simulator
             return -1;
         }
 
-        for (int i = 0; i < this->M_len; i++)
+        for (std::size_t i = 0; i < this->M_len; i++)
         {
             int bit = (i >> nth) & 1;
             if (bit != outcome)
