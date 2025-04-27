@@ -111,6 +111,18 @@ std::string get_quantum_info(const std::size_t &nQ, const std::vector<std::uniqu
                 qsys.apply_rotation_z(deg_to_rad(casted->M_theta), casted->M_qubit);
                 set_quantum_states(qsys, ret_val, casted->M_gate);
             }
+            else if(casted->M_gate == "V")
+            {
+                std::printf("Applying V Gate on Qubit %zu:\n", casted->M_qubit);
+                qsys.apply_v(casted->M_qubit);
+                set_quantum_states(qsys, ret_val, casted->M_gate);
+            }
+            else if(casted->M_gate == "adjV")
+            {
+                std::printf("Applying V^-1 Gate on Qubit %zu:\n", casted->M_qubit);
+                qsys.apply_adj_v(casted->M_qubit);
+                set_quantum_states(qsys, ret_val, casted->M_gate);
+            }
         }
         else if (i->get_gate_type() == simulator::gate_type::CNOT_GATE)
         {
