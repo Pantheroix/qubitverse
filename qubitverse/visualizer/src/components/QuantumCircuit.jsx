@@ -31,6 +31,8 @@ const gatesList = [
     "Rx",
     "Ry",
     "Rz",
+    "V",
+    "V†",
     "CNOT",
     "CZ",
     "SWAP",
@@ -90,6 +92,16 @@ const gateTooltips = {
         latex:
             "$$R_z(\\theta) = \\begin{pmatrix} e^{-i\\theta/2} & 0 \\\\ 0 & e^{i\\theta/2} \\end{pmatrix}$$",
     },
+    V: {
+        desc: "Square-root of NOT Gate (alias for √X)",
+        latex:
+            "$$V = \\frac{1}{2} \\begin{pmatrix} 1 + i & 1 - i \\\\ 1 - i & 1 + i \\end{pmatrix}$$",
+    },
+    "V†": {
+        desc: "Adjoint of the V gate (alias for (√X)⁻¹)",
+        latex:
+            "$$V† = \\frac{1}{2} \\begin{pmatrix} 1 - i & 1 + i \\\\ 1 + i & 1 - i \\end{pmatrix}$$",
+    },
     CNOT: {
         desc: "Controlled-NOT (Entanglement) Gate",
         latex:
@@ -111,6 +123,7 @@ const gateTooltips = {
             "$$\\text{Measure }n^{\\text{th}}\\text{ Qubit}$$"
     }
 };
+
 
 // Helper to clamp a value between min and max
 const clamp = (value, min, max) => Math.max(min, Math.min(value, max));

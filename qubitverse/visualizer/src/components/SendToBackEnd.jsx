@@ -9,7 +9,7 @@ function extractCircuitData(gates, cnotGates, czGates, swapGates, measureNthQ, n
         const qubitIndex = Math.round((gate.y + 20) / 50) - 1; // 20 is half of gateSize, 50 is qubitSpacing
         return {
             type: "single",
-            gateType: gate.text, // X, Y, H, etc.
+            gateType: (gate.text === "V†" ? "adjV" : gate.text), // X, Y, H, etc.
             qubit: qubitIndex,
             theta: Object.hasOwn(gate, "params") === false ? -1 : gate.params.theta,
             position: gate.x,
