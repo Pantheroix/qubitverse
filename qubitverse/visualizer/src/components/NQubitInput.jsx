@@ -78,7 +78,7 @@ function NQubitInput({ setQubits }) {
                 <div style={{ height: "480px", width: "100%", marginLeft: "20px" }}>
                     {lineData.length > 0 ? (
                         <ResponsiveContainer width="100%" height="100%" style={{ marginTop: "100px", marginLeft: "30px" }}>
-                            <LineChart data={lineData} margin={{ top: 0, right: 30, left: 0, bottom: 0 }}>
+                            <LineChart data={lineData} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="qubits" label={{ value: 'Qubits', position: 'insideBottom', offset: -5 }} />
                                 <YAxis
@@ -106,6 +106,13 @@ function NQubitInput({ setQubits }) {
                                 <Legend />
                                 <Line type="monotone" dataKey="bytes" stroke="#82ca9d" dot />
                             </LineChart>
+                            <code style={{
+                               
+                                fontWeight: "bold",
+                                fontSize: "17px",
+                                color: "green",
+                                marginLeft: "37%",
+                            }}>Memory Requirements</code>
                         </ResponsiveContainer>
 
                     ) : (
