@@ -937,17 +937,14 @@ const QuantumCircuit = ({ numQubits, setNumQubits }) => {
                 {/* Left Menu: single box with gates on top and 3 buttons below */}
                 <div
                     style={{
-                        position: "fixed",
-                        top: "50%",
-                        left: "10px",
-                        width: "200px",
+                        float:"left",
+                        width: "17%",
                         border: "3px solid black",
                         borderRadius: "5px",
                         background: "white",
                         padding: "10px",
-                        marginTop: "60px",
                         zIndex: 10, // keep above the stage
-                        transform: "translateY(-50%)",
+
                     }}
                 >
                     <h2 className="text-l font-bold text-gray-800" style={{ userSelect: "none", textAlign: "center" }}>Quantum Gates</h2>
@@ -957,6 +954,7 @@ const QuantumCircuit = ({ numQubits, setNumQubits }) => {
                             border: "1px solid black",
                             borderRadius: "5px",
                             width: "100%",
+                            height:"250px",
                             padding: "5px",
                             display: "flex",
                             flexWrap: "wrap",
@@ -964,6 +962,7 @@ const QuantumCircuit = ({ numQubits, setNumQubits }) => {
                             justifyContent: "space-evenly",
                             marginBottom: "10px",
                             overflowY: "auto",
+                            scrollbarWidth:"none"
                         }}
                     >
                         {gatesList.map((gate, index) => {
@@ -1040,9 +1039,10 @@ const QuantumCircuit = ({ numQubits, setNumQubits }) => {
                 {/* Right Content: depends on active tab */}
                 <div
                     style={{
-                        marginLeft: "220px", // leave space for the left menu
-                        flex: 1,
+                        width:"80%",
+                        flex:1,
                         position: "relative",
+                        float:"right"
                     }}
                 >
                     {/* TOOLTIP */}
