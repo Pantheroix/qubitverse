@@ -16,6 +16,7 @@ const gateSize = 45; // width/height for single-qubit gate squares
 const canvasMinX = 50; // left bound for gates on the stage
 const canvasMaxX = window.innerWidth - 300 - gateSize; // right bound so gate stays visible
 
+
 // =======================
 // GATE LIST
 // =======================
@@ -910,6 +911,33 @@ const QuantumCircuit = ({ numQubits, setNumQubits }) => {
 
         setMeasurementHist([]);
     }
+const [Dragging, setDragging] = useState(false);
+  const [position, setPosition] = useState({ x: 100, y: 100 });
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const boxRef = useRef(null);
+
+  const startDrag = (e) => {
+    setDragging(true);
+    setOffset({ x: e.clientX - position.x, y: e.clientY - position.y });
+  };
+
+  const handleMouseMove = (e) => {
+    if (!Dragging) return;
+    setPosition({ x: e.clientX - offset.x, y: e.clientY - offset.y });
+  };
+
+  const handleMouseUp = () => setDragging(false);
+
+  useEffect(() => {
+    if (Dragging) {
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+    }
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [Dragging, offset]);
 
     return (
         <MathJaxContext>
@@ -935,19 +963,39 @@ const QuantumCircuit = ({ numQubits, setNumQubits }) => {
                 </div>
 
                 {/* Left Menu: single box with gates on top and 3 buttons below */}
-                <div
+                
+                <div  
                     style={{
-                        float:"left",
-                        width: "17%",
+                       position: "absolute", // important for dragging
+                        left: position.x,
+                        top: position.y,
+                        width: "18%",
+                        height:"350px",
                         border: "3px solid black",
                         borderRadius: "5px",
                         background: "white",
-                        padding: "10px",
-                        zIndex: 10, // keep above the stage
+                        paddingBottom: "10px",
+                        paddingRight: "10px",
+                        paddingLeft: "10px",
+                        zIndex: 5000, // keep above the stage
+                        resize: "vertical",
+                        overflowY: "auto",
+                        cursor: Dragging ? "grabbing" : "grab",
+                        scrollbarWidth: "none"
 
                     }}
                 >
+                    <div ref={boxRef} onMouseDown={startDrag}
+                    style={{
+                        position:"sticky",
+                        top:"0",
+                        width:"100%",
+                        background:"#fff",
+                        paddingTop:"10px"
+                        
+                    }}>
                     <h2 className="text-l font-bold text-gray-800" style={{ userSelect: "none", textAlign: "center" }}>Quantum Gates</h2>
+                    </div>
                     {/* Gates box */}
                     <div
                         style={{
@@ -962,7 +1010,7 @@ const QuantumCircuit = ({ numQubits, setNumQubits }) => {
                             justifyContent: "space-evenly",
                             marginBottom: "10px",
                             overflowY: "auto",
-                            scrollbarWidth:"none"
+                            scrollbarWidth:"none",
                         }}
                     >
                         {gatesList.map((gate, index) => {
@@ -1039,7 +1087,7 @@ const QuantumCircuit = ({ numQubits, setNumQubits }) => {
                 {/* Right Content: depends on active tab */}
                 <div
                     style={{
-                        width:"80%",
+                        width:"100%",
                         flex:1,
                         position: "relative",
                         float:"right"
