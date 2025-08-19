@@ -14,7 +14,7 @@ import MeasurementChart from "./MeasurementChart";
 const qubitSpacing = 50; // vertical spacing between qubit lines
 const gateSize = 45; // width/height for single-qubit gate squares
 const canvasMinX = 50; // left bound for gates on the stage
-const canvasMaxX = window.innerWidth - 300 - gateSize; // right bound so gate stays visible
+const canvasMaxX = window.innerWidth-300 - gateSize; // right bound so gate stays visible
 
 
 // =======================
@@ -578,7 +578,7 @@ const QuantumCircuit = ({ numQubits, setNumQubits }) => {
                 listening={true}
             />
             <Line
-                points={[50, y, window.innerWidth - 300, y]}
+                points={[50, y, window.innerWidth ,y]}
                 stroke="black"
                 strokeWidth={2}
             />
@@ -977,7 +977,7 @@ const [Dragging, setDragging] = useState(false);
                         paddingBottom: "10px",
                         paddingRight: "10px",
                         paddingLeft: "10px",
-                        zIndex: 5000, // keep above the stage
+                        zIndex: 100, // keep above the stage
                         resize: "vertical",
                         overflowY: "auto",
                         cursor: Dragging ? "grabbing" : "grab",
@@ -1090,7 +1090,7 @@ const [Dragging, setDragging] = useState(false);
                         width:"100%",
                         flex:1,
                         position: "relative",
-                        float:"right"
+                        float:"right",
                     }}
                 >
                     {/* TOOLTIP */}
@@ -1129,7 +1129,7 @@ const [Dragging, setDragging] = useState(false);
                             <Stage
                                 key={activeTab}
                                 ref={stageRef}
-                                width={window.innerWidth - 280}
+                                width={window.innerWidth-50}
                                 height={(numQubits + 1) * qubitSpacing}
                                 style={{
                                     border: "3px solid black",
